@@ -11,7 +11,7 @@ import { Toaster } from 'react-hot-toast'
 import Footer from './components/Footer'
 import Layout from './Pages/admin/Layout'
 import Dashboard from './Pages/admin/Dashboard'
-import Addshows from './Pages/admin/Addshows'
+import AddShows from './Pages/admin/AddShows'
 import ListShows from './Pages/admin/ListShows'
 import ListBookings from './Pages/admin/ListBookings'
 
@@ -32,7 +32,7 @@ const App = () => {
         <Route path='/favorite' element={<Favorite />} />
         <Route path='/admin/*' element={<Layout />}>
           <Route index element={<Dashboard />} />
-          <Route path='add-shows' element={<Addshows />} />
+          <Route path='add-shows' element={<AddShows />} />
           <Route path='list-shows' element={<ListShows />} />
           <Route path='list-bookings' element={<ListBookings />} />
         </Route>
