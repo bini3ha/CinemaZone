@@ -1,8 +1,8 @@
-import epxress from 'express';
+import express from 'express';
 import { protectAdmin } from '../middleware/auth.js';
 import { getAllBookings, getAllShows, getDashboardData, isAdmin } from '../controllers/adminController.js';
 
-const adminRouter = epxress.Router();
+const adminRouter = express.Router();
 
 adminRouter.get('/is-admin', protectAdmin, isAdmin)
 adminRouter.get('/dashboard', protectAdmin, getDashboardData)
