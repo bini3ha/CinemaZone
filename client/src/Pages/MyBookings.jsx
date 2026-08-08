@@ -5,6 +5,7 @@ import BlurCircle from '../components/BlurCircle'
 import timeFormat from '../lib/timeFormat'
 import { dateFormat } from '../lib/dateFormat'
 import { useAppContext } from '../context/AppContext'
+import { useLocation } from 'react-router-dom'
 
 const MyBookings = () => {
   const currency = import.meta.env.VITE_CURRENCY
@@ -57,6 +58,16 @@ const MyBookings = () => {
     }
   }
 
+  const location = useLocation()
+
+  useEffect(() => {
+    if (location.search.includes('payment=success')) {
+      toast.success('Payment successful!')
+    }
+    if (location.search.includes('payment=failed')) {
+      toast.error('Payment failed!')
+    }
+  }, [location])
 
   useEffect(() => {
     if (user) {
