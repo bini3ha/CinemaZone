@@ -6,7 +6,7 @@ import timeFormat from '../lib/timeFormat'
 import { dateFormat } from '../lib/dateFormat'
 import { useAppContext } from '../context/AppContext'
 import { useLocation } from 'react-router-dom'
-import { toast } from 'react-toastify'
+import toast from 'react-hot-toast'
 
 const MyBookings = () => {
   const currency = import.meta.env.VITE_CURRENCY
