@@ -23,6 +23,15 @@ export const verifyEsewaPayment = async (req, res) => {
         // Mark booking as paid
         await Booking.findByIdAndUpdate(transaction_uuid, { isPaid: true });
 
+        // Send Confirmation Email
+        await inngest.send({
+            name: "app/show.booked",
+            data: {
+                bookingId: transaction_uuid
+            }
+
+        })
+
         res.redirect(`${process.env.CLIENT_URL}/my-bookings?payment=success`);
     } catch (error) {
         console.log(error.message);
