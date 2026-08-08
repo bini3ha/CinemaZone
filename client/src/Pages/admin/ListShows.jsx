@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import Loading from '../../Components/Loading'
-import Title from '../../Components/admin/Title'
+import Loading from '../../components/Loading'
+import Title from '../../components/admin/Title'
 import { dummyShowsData } from '../../assets/assets'
 import { dateFormat } from '../../lib/dateFormat'
 import { useAppContext } from '../../context/AppContext'
@@ -25,7 +25,7 @@ const ListShows = () => {
   }
 
   useEffect(() => {
-    if(user){
+    if (user) {
       getAllshows();
     }
   }, [user]);

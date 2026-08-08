@@ -83,11 +83,8 @@ export const createBooking = async (req, res) => {
         booking.paymentLink = JSON.stringify(esewaData);
         await booking.save();
 
-        // Run Inngest Sheduler Function to check payment status after 10 minutes
-        await inngest.send({
-            name: "app/checkpayment",
-            data: { bookingId: booking._id.toString() }
-        })
+        await inngest.send({ name: 'app/checkpayment', data: { bookingId: booking._id } })
+        await inngest.send({ name: 'app/show.booked', data: { bookingId: booking._id } })
 
         res.json({ success: true, message: "Booking Successful", esewaData })
 

@@ -72,7 +72,7 @@ const releaseSeatsAndDeleteBooking = inngest.createFunction(
     }
 )
 
-// Inngest Function to send email when usesr books a show
+// Inngest Function to send email when user books a show
 const sendBookingConfirmationEmail = inngest.createFunction(
     { id: "send-booking-confirmation-email", triggers: [{ event: "app/show.booked" }] },
     async ({ event, step }) => {
@@ -85,11 +85,11 @@ const sendBookingConfirmationEmail = inngest.createFunction(
 
         await sendEmail({
             to: booking.user.email,
-            suject: `Payment Confirmation: "${booking.show.movie.title}" booked!`,
+            subject: `Payment Confirmation: "${booking.show.movie.title}" booked!`,
             body: `
                 <div>
                     <h2>Hello ${booking.user.name}</h2>
-                    <p>Your booking for the movie <strong>${booking.show.movie.title}</strong> on ${new Date(booking.show.date).toLocaleDateString()} at ${booking.show.time} has been confirmed.</p>
+                    <p>Your booking for the movie <strong>${booking.show.movie.title}</strong> on ${new Date(booking.show.showDateTime).toLocaleString()} has been confirmed.</p>
                     <p>Seats booked: ${booking.bookedSeats.join(', ')}</p>
                     <p>Booking ID: ${booking._id}</p>
                     <p>Thank you for choosing our service!<br/> - CinemaZone</p>
@@ -99,10 +99,43 @@ const sendBookingConfirmationEmail = inngest.createFunction(
     }
 )
 
+// Inngest Function to send notifications when a new show is added
+const sendNewShowNotifications = inngest.createFunction(
+    { id: "send-new-show-notifications", triggers: [{ event: "app/show.added" }] },
+    async ({ event}) => {
+        const { movieTitle } = event.data;
+
+        const users = await User.find({})
+
+        for (const user of users) {
+            const userEmail = user.email;
+            const userName = user.name;
+
+            const subject = `New Show Available: ${movieTitle}`;
+            const body = `
+                <div>
+                    <h2>Hello ${userName}</h2>
+                    <p>A new show for the movie <strong>${movieTitle}</strong> has been added.</p>
+                    <p>Book now to secure your seats!<br/> - CinemaZone</p>
+                </div>
+            `;
+
+            await sendEmail({
+                to: userEmail,
+                subject,
+                body,
+            })
+        } 
+        
+        return {message: "Notifications sent!"}
+    }
+)
+
 export const functions = [
     syncUserCreation,
     syncUserDeletion,
     syncUserUpdation,
     releaseSeatsAndDeleteBooking,
-    sendBookingConfirmationEmail
+    sendBookingConfirmationEmail,
+    sendNewShowNotifications
 ];
